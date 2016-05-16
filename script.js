@@ -11,12 +11,15 @@ app.controller('CarCostCalculatorCtrl', function($scope){
     fixed_expenses: {
       annual: {
         ipva: 1800,
-        insurance: 0
+        insurance: 0,
+        fines: 200
       },
       monthly: {
         garage_home: 0,
         garage_work: 0,
         parking: 200,
+        washing: 80,
+        toll: 0,
       }
     }
   };
