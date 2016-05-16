@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt" ng-app="CarCostCalculatorApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Calculadora de Custo do Carro</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!-- AngularJS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.5/angular-locale_pt-br.min.js"></script>
+  <script src="https://cdn.rawgit.com/assisrafael/bower-angular-input-masks/master/angular-input-masks-standalone.min.js"></script>
+</head>
+<body ng-controller="CarCostCalculatorCtrl">
+  <div class="container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th colspan="3">Custo do Combustível</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-md-10" colspan="2">Distância média percorrida (km/mês)</th>
+          <td class="col-md-2"><input type="number" ng-model="params.fuel.km_month"></td>
+        </tr>
+        <tr>
+          <td class="col-md-10" colspan="2">Consumo de combustível do carro (km/litro)</th>
+          <td class="col-md-2"><input type="text" ng-model="params.fuel.km_per_liter" ui-number-mask="1"></td>
+        </tr>
+        <tr>
+          <td class="col-md-10" colspan="2">Preço médio do combustível (litro)</th>
+          <td class="col-md-2"><input type="text" ng-model="params.fuel.liter_price" ui-money-mask="3"></td>
+        </tr>
+        <tr>
+          <th class="col-md-10" colspan="2">Gasto anual com combustível:</th>
+          <th class="col-md-2">{{calculateFuelCost()|currency:'R$ '}}</td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr>
+          <th class="col-md-8">Custos Fixos</th>
+          <th class="col-md-2">Mensais</th>
+          <th class="col-md-2">Anuais</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-md-8">IPVA</td>
+          <td class="col-md-2">{{params.fixed_expenses.annual.ipva / 12 | currency:'R$ '}}</td>
+          <td class="col-md-2"><input type="text" ng-model="params.fixed_expenses.annual.ipva" ui-money-mask="2"></td>
+        </tr>
+        <tr>
+          <td class="col-md-8">Seguro</td>
+          <td class="col-md-2">{{params.fixed_expenses.annual.insurance / 12 | currency:'R$ '}}</td>
+          <td class="col-md-2"><input type="text" ng-model="params.fixed_expenses.annual.insurance" ui-money-mask="2"></td>
+        </tr>
+        <tr>
+          <td class="col-md-8">
+            Aluguel de Vaga Residencial<br>
+            <small>Valor a ser preenchido caso sua casa ou prédio não tenha garagem e você alugue uma vaga mensalista próximo a sua residência.</small>
+          </td>
+          <td class="col-md-2"><input type="text" ng-model="params.fixed_expenses.monthly.garage_home" ui-money-mask="2"></td>
+          <td class="col-md-2">{{params.fixed_expenses.monthly.garage_home * 12 | currency:'R$ '}}</td>
+        </tr>
+        <tr>
+          <td class="col-md-8">
+            Aluguel de Vaga Comercial<br>
+            <small>Valor a ser preenchido caso seu trabalho não disponibilize vaga de garagem e você alugue uma vaga mensalista próximo ao trabalho.</small>
+          </td>
+          <td class="col-md-2"><input type="text" ng-model="params.fixed_expenses.monthly.garage_work" ui-money-mask="2"></td>
+          <td class="col-md-2">{{params.fixed_expenses.monthly.garage_work * 12 | currency:'R$ '}}</td>
+        </tr>
+        <tr>
+          <td class="col-md-8">
+            Estacionamento<br>
+            <small>Uma média de gasto mensal com estacionamento rotativo.</small>
+          </td>
+          <td class="col-md-2"><input type="text" ng-model="params.fixed_expenses.monthly.parking" ui-money-mask="2"></td>
+          <td class="col-md-2">{{params.fixed_expenses.monthly.parking * 12 | currency:'R$ '}}</td>
+        </tr>
+        <tr>
+          <th class="col-md-10" colspan="2">Gasto anual com despesas fixas:</th>
+          <th class="col-md-2">{{calculateFixedExpenses()|currency:'R$ '}}</th>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th class="col-md-10" colspan="2">Custo total anual do carro:</th>
+          <th class="col-md-2">{{calculateTotalCost()|currency:'R$ '}}</th>
+        </tr>
+      </tfoot>
+    </table>
+    <p>Debug</p>
+    <p><pre>{{params | json}}</pre></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
